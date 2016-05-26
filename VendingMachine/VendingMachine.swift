@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 //All the code related to the vending machine model
@@ -103,6 +104,15 @@ enum VendingSelection: String {
     case FruitJuice
     case SportsDrink
     case Gum
+    
+    
+    func icon() -> UIImage {
+        if let image = UIImage(named: self.rawValue ) {
+            return image
+        } else {
+            return UIImage(named: "Default")!
+        }
+    }
 }
 
 class VendingMachine : VendingMachineType {
