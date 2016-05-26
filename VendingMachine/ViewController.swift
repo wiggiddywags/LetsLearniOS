@@ -19,6 +19,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @IBOutlet weak var quantityLabel: UILabel!
     
     let vendingMachine : VendingMachineType
+    var currentSelection : VendingSelection?
     
     required init?(coder aDecoder: NSCoder) {
         do {
@@ -40,7 +41,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         setupCollectionViewCells()
-        print(vendingMachine.inventory)
+        //print(vendingMachine.inventory)
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,6 +77,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         updateCellBackgroundColor(indexPath, selected: true)
+        
+        currentSelection = vendingMachine.selection[indexPath.row]
         
     }
     

@@ -38,6 +38,12 @@ enum InventoryError: ErrorType {
     case InvalidKey
 }
 
+enum VendingMachineError: ErrorType {
+    case InvalidSelection
+    case OutOfStock
+    case InsufficientFunds(required: Double)
+}
+
 // Helper Classes
 
 class PlistConverter {
@@ -125,7 +131,24 @@ class VendingMachine : VendingMachineType {
     }
     
     func vend(selection: VendingSelection, quantity: Double) throws {
-        // add code
+        guard var item = inventory[selection] else {
+            throw VendingMachineError.InvalidSelection
+        }
+        
+        guard item.quantity > 0 else {
+            throw VendingMachineError.OutOfStock
+        }
+        
+        item.quantity -= quantity
+        inventory.updateValue(item, forKey: selection)
+        
+        let totalPrice = item.price * quantity
+        if amountDeposited >= totalPrice {
+            amountDeposited -= totalPrice
+        } else {
+            let amountRequired = totalPrice - amountDeposited
+            throw VendingMachineError.InsufficientFunds(required: amountRequired)
+        }
     }
     
     func deposit(amount: Double) {
