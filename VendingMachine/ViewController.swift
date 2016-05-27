@@ -119,8 +119,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 try vendingMachine.vend(currentSelection, quantity: quantity)
                 
                 balanceLabel.text = "$\(vendingMachine.amountDeposited)"
-            } catch {
-                // FIXME: Error handling code
+            } catch VendingMachineError.OutOfStock {
+                showAlert()
+            }catch {
+                
             }
             
         } else {
@@ -154,6 +156,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         quantity = 1
         updateTotalPriceLabel()
         updateQuantityLabel()
+    }
+    
+    func showAlert() {
+        let alertController = UIAlertController(title: "Out of Stock", message: nil, preferredStyle: .Alert)
+        presentViewController(alertController, animated: true, completion: nil)
     }
 }
 
