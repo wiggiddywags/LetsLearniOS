@@ -43,6 +43,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         // Do any additional setup after loading the view, typically from a nib.
         setupCollectionViewCells()
         //print(vendingMachine.inventory)
+        balanceLabel.text = "$\(vendingMachine.amountDeposited)"
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,6 +82,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         updateCellBackgroundColor(indexPath, selected: true)
         
         currentSelection = vendingMachine.selection[indexPath.row]
+        //upwrap optional || compound if let selection
+        if let currentSelection = currentSelection, let item = vendingMachine.itemForCurrentSelection(currentSelection) {
+            totalLabel.text = "$\(item.price)"
+        }
         
     }
     
@@ -108,6 +114,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         if let currentSelection = currentSelection {
             do {
                 try vendingMachine.vend(currentSelection, quantity: quantity)
+                balanceLabel.text = "$\(vendingMachine.amountDeposited)"
             } catch {
                 // FIXME: Error handling code
             }
