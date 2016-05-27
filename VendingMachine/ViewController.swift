@@ -51,6 +51,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
     
     // MARK: - UICollectionView 
 
@@ -122,6 +123,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         } else {
             // FIXME: Alert user to no selection
         }
+    }
+    
+    @IBAction func updateQuantity(sender: UIStepper) {
+        //print(sender.value)
     }
 }
 
