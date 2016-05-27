@@ -120,9 +120,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 
                 balanceLabel.text = "$\(vendingMachine.amountDeposited)"
             } catch VendingMachineError.OutOfStock {
-                showAlert()
-            }catch {
+                showAlert("Out of Stock")
+            } catch VendingMachineError.InvalidSelection {
                 
+                showAlert("Invalid Selection!")
+                
+            } catch VendingMachineError.InsufficientFunds(let amount) {
+                
+                showAlert("Insufficient Funds", message: "Additional $\(amount) needed to complete purchase")
+                
+            } catch let error{
+                fatalError("\(error)")
             }
             
         } else {
@@ -158,9 +166,26 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         updateQuantityLabel()
     }
     
-    func showAlert() {
-        let alertController = UIAlertController(title: "Out of Stock", message: nil, preferredStyle: .Alert)
+    func showAlert(alert: String, message: String? = nil, style: UIAlertControllerStyle = .Alert) {
+        let alertController = UIAlertController(title: alert,
+            message: message, preferredStyle: style)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .Default,
+                                     handler: dismissAlert)
+        
+        alertController.addAction(okAction)
+        
         presentViewController(alertController, animated: true, completion: nil)
     }
+    
+    func dismissAlert(sender: UIAlertAction) {
+        reset()
+    }
+    
+    @IBAction func depositFunds() {
+        vendingMachine.deposit(5.00)
+        updateBalanceLabel()
+    }
+    
 }
 
